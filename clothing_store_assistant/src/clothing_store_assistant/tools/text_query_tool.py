@@ -4,7 +4,9 @@ from sentence_transformers import SentenceTransformer
 import chromadb
 import os
 from crewai.tools import BaseTool
-
+project_root = os.path.dirname(os.path.abspath(__file__))
+chroma_path = os.path.join(project_root,"..","..", "..", "chroma_store_text")
+chroma_path = os.path.abspath(chroma_path)
 
 class TextQueryInput(BaseModel):
     text_query: str = Field(..., description="Text query for product search")
@@ -23,10 +25,8 @@ class TextQueryTool(BaseTool):
         arbitrary_types_allowed = True
 
     def __init__(self, **kwargs):
-        project_root = os.path.dirname(os.path.abspath(__file__))
-        chroma_path = os.path.join(project_root,"..","..", "..", "chroma_store_text")
-        chroma_path = os.path.abspath(chroma_path)  # Normalize to full absolute path
-
+          # Normalize to full absolute path
+        super().__init__(**kwargs)
         object.__setattr__(self, '_text_model',
                            SentenceTransformer('all-mpnet-base-v2'))
         object.__setattr__(self, '_chroma_collection',
