@@ -24,7 +24,7 @@ class TextQueryTool(BaseTool):
 
     def __init__(self, **kwargs):
         project_root = os.path.dirname(os.path.abspath(__file__))
-        chroma_path = os.path.join(project_root, "..", "..", "chroma_store_text")
+        chroma_path = os.path.join(project_root,"..","..", "..", "chroma_store_text")
         chroma_path = os.path.abspath(chroma_path)  # Normalize to full absolute path
 
         object.__setattr__(self, '_text_model',
