@@ -1,7 +1,6 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from  clothing_store_assistant.src.clothing_store_assistant.tools.text_query_tool import TextQueryTool
-from  clothing_store_assistant.src.clothing_store_assistant.tools.combined_query_tool import CombinedQueryTool
 from clothing_store_assistant.src.clothing_store_assistant.tools.vision_tool import GeminiClothingDescriptorTool
 from dotenv import load_dotenv
 
@@ -17,7 +16,6 @@ class EcommerceSearchCrew:
     def __init__(self):
         # Initialize tools
         self.text_tool = TextQueryTool()
-        self.combined_tool = CombinedQueryTool()
 
     @agent
     def Query_Analyzer(self) -> Agent:
