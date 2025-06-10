@@ -160,6 +160,6 @@ streamlit run streamlit_app.py
 ---
 
 
-###Example Usage
+### Example Usage
 ![Example Usage](https://github.com/badri-2004/AI-Clothing-Assistant/blob/main/screen-capture2-ezgif.com-optimize.gif)
 
