@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field, PrivateAttr
 from typing import Dict, List, Any
 from sentence_transformers import SentenceTransformer
 import chromadb
+import os
 from crewai.tools import BaseTool
 
 
@@ -22,12 +23,16 @@ class TextQueryTool(BaseTool):
         arbitrary_types_allowed = True
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        project_root = os.path.dirname(os.path.abspath(__file__))
+        chroma_path = os.path.join(project_root, "..", "..", "chroma_store_text")
+        chroma_path = os.path.abspath(chroma_path)  # Normalize to full absolute path
+
         object.__setattr__(self, '_text_model',
                            SentenceTransformer('all-mpnet-base-v2'))
         object.__setattr__(self, '_chroma_collection',
-                           chromadb.PersistentClient(path="C:\\Users\\badri\\PycharmProjects\\PythonProject4\\clothing_store_assistant\\chroma_store_text")
+                           chromadb.PersistentClient(path=chroma_path)
                            .get_collection("ecommerce_text"))
+
 
     def _run(self, text_query: str, top_k: int = 5) -> Dict[str, Any]:
         try:
