@@ -1,9 +1,10 @@
 import streamlit as st
 import os
 import warnings
-import os
-
 import torch
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 # MUST be the first Streamlit call
