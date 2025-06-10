@@ -5,7 +5,6 @@ from google.genai import types
 import os
 
 g_api_key = os.environ['GEMINI_API_KEY']
-print(g_api_key)
 class ClothingDescriptorInput(BaseModel):
     image_path: str = Field(..., description="Path to the clothing image file.")
 
