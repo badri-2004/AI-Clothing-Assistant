@@ -1,0 +1,177 @@
+analyze_query_task:
+  description: >
+    Given a a user query ({text_query}),
+    understand the intent behind the query, and clearly elaborate on it. It goes to a fashion designer who has an image and knows what to do.
+
+  expected_output: >
+    You do not reply or change the query. Just elaborate the query.
+
+  agent: Query_Analyzer
+
+Fashion_Suggestion_Task:
+  description: >
+    Understand the image at {image_path} and the elaborated query, give appropriate detailed suggestions from a fashion point of view.
+    Give detailed suggestion by only going through the elaborated query if the {image_path} does not exist or is empty. Keep in mind this is what we have in shop:
+    - gender: ['Men', 'Boys', 'Girls', 'Women', 'Unisex']
+    - articleType: ['Tshirts', 'Clothing Set', 'Kurta Sets', 'Swimwear', 'Capris', 'Churidar', 'Jeans', 'Jeggings', 'Leggings', 'Patiala', 'Rain Trousers', 'Salwar and Dupatta', 'Salwar', 'Shorts', 'Skirts', 'Tights', 'Track Pants', 'Tracksuits', 'Trousers', 'Dresses', 'Jumpsuit', 'Boxers', 'Bra', 'Briefs', 'Camisoles', 'Innerwear Vests', 'Shapewear', 'Lounge Pants', 'Lounge Shorts', 'Lounge Tshirts', 'Night suits', 'Nightdress', 'Robe', 'Sarees', 'Blazers', 'Dupatta', 'Jackets', 'Kurtas', 'Kurtis', 'Lehenga Choli', 'Nehru Jackets', 'Rain Jacket', 'Rompers', 'Shirts', 'Shrug', 'Suits', 'Sweaters', 'Sweatshirts', 'Tops', 'Tunics', 'Waistcoat']
+    - baseColour: ['Pink', 'Blue', 'Red', 'White', 'Yellow', 'Beige', 'Black', 'Brown', 'Charcoal', 'Cream', 'Green', 'Grey', 'Magenta', 'Multi', 'Mustard', 'Navy Blue', 'Off White', 'Orange', 'Purple', 'Teal', 'Grey Melange', 'Olive', 'Turquoise Blue', 'Rust', 'Lavender', null, 'Peach', 'Maroon', 'Nude', 'Sea Green', 'Khaki', 'Tan', 'Mauve', 'Coffee Brown', 'Gold', 'Burgundy', 'Mushroom Brown', 'Rose', 'Silver', 'Skin', 'Taupe', 'Lime Green', 'Fluorescent Green']
+    - season: ['Summer', 'Fall', 'Winter', 'Spring']
+
+  expected_output: >
+    Give 2-3 one line suggestions after going through the query and image(if it is present). You should not mention how you arrived at the suggestion.
+    Must include Gender, Clothing type, Color , usage, season of use, fabric of the suggestion. Give yours suggestions as a list
+  agent: Fashion_Expert
+  context:
+    - analyze_query_task
+
+RAG_Query_Generation:
+  description: >
+    Understand the Fashion suggestion given, and generate a RAG-friendly query.
+    Provided text is stored internally as:
+    ['productDisplayName']. ['ProductDescription'], It is a ['baseColour'] ['articleType'] : Explanation of article type designed for ['gender']. Best used in ['usage'] during ['season'].
+    
+    The agent **must normalize** input fields to use exact controlled vocabulary terms for:
+    - gender: ['Men', 'Boys', 'Girls', 'Women', 'Unisex']
+    - articleType: ['Tshirts', 'Clothing Set', 'Kurta Sets', 'Swimwear', 'Capris', 'Churidar', 'Jeans', 'Jeggings', 'Leggings', 'Patiala', 'Rain Trousers', 'Salwar and Dupatta', 'Salwar', 'Shorts', 'Skirts', 'Tights', 'Track Pants', 'Tracksuits', 'Trousers', 'Dresses', 'Jumpsuit', 'Boxers', 'Bra', 'Briefs', 'Camisoles', 'Innerwear Vests', 'Shapewear', 'Lounge Pants', 'Lounge Shorts', 'Lounge Tshirts', 'Night suits', 'Nightdress', 'Robe', 'Sarees', 'Blazers', 'Dupatta', 'Jackets', 'Kurtas', 'Kurtis', 'Lehenga Choli', 'Nehru Jackets', 'Rain Jacket', 'Rompers', 'Shirts', 'Shrug', 'Suits', 'Sweaters', 'Sweatshirts', 'Tops', 'Tunics', 'Waistcoat']
+    - baseColour: ['Pink', 'Blue', 'Red', 'White', 'Yellow', 'Beige', 'Black', 'Brown', 'Charcoal', 'Cream', 'Green', 'Grey', 'Magenta', 'Multi', 'Mustard', 'Navy Blue', 'Off White', 'Orange', 'Purple', 'Teal', 'Grey Melange', 'Olive', 'Turquoise Blue', 'Rust', 'Lavender', null, 'Peach', 'Maroon', 'Nude', 'Sea Green', 'Khaki', 'Tan', 'Mauve', 'Coffee Brown', 'Gold', 'Burgundy', 'Mushroom Brown', 'Rose', 'Silver', 'Skin', 'Taupe', 'Lime Green', 'Fluorescent Green']
+    - season: ['Summer', 'Fall', 'Winter', 'Spring']
+    
+    If a brand and/or pattern are mentioned, use them in place of productDisplayName; otherwise, use the closest descriptive name.
+    
+    For ambiguous or informal terms (e.g., "male" → "Men", "dark colored" → one of the recognized baseColour like "Black"), perform normalization.
+    
+    Usage should be explicit if mentioned; default to "Casual" if missing.
+
+  expected_output: >
+    A list of one line descriptions of the explained format. A should be a clear readable list of strings.
+    
+    category_explanation_map = {
+                                 "Tshirts": "a casual, collarless knit top usually with short sleeves.",
+                                 "Clothing Set": "a matching or coordinated combination of garments sold as a set, often including tops and bottoms.",
+                                 "Kurta Sets": "a traditional Indian outfit consisting of a kurta and matching bottoms.",
+                                 "Swimwear": "garments designed specifically for swimming, including swimsuits, bikinis, and trunks.",
+                                 "Capris": "close-fitting pants that extend below the knee but above the ankle, often worn casually.",
+                                 "Churidar": "tight-fitting trousers worn under kurtas, typically longer and gathered at the ankles.",
+                                 "Jeans": "sturdy, casual trousers made from denim fabric, popular for everyday wear.",
+                                 "Jeggings": "leggings styled to resemble jeans, combining comfort with denim aesthetics.",
+                                 "Leggings": "tight-fitting stretch pants, typically ankle-length, worn as activewear or under tunics.",
+                                 "Patiala": "a type of pleated, baggy trousers traditional to Punjab, usually paired with kurtas.",
+                                 "Rain Trousers": "water-resistant or waterproof pants worn to protect from rain.",
+                                 "Salwar and Dupatta": "a combination of loose trousers (salwar) and a long scarf (dupatta), often worn with a kameez or kurta.",
+                                 "Salwar": "a type of loose-fitting trousers gathered at the waist and ankles, often worn with Indian ethnic tops.",
+                                 "Shorts": "casual or athletic lower garments that end above the knees.",
+                                 "Skirts": "lower garments that hang from the waist and flow freely around the legs.",
+                                 "Tights": "tight-fitting leg coverings that extend from the waist to the toes, often worn under skirts or dresses.",
+                                 "Track Pants": "comfortable, athletic-style pants typically made from knit or polyester fabric, used for workouts or lounging.",
+                                 "Tracksuits": "a coordinated set of track pants and jacket, used for sports or athleisure.",
+                                 "Trousers": "formal or semi-formal pants that cover the legs from waist to ankle.",
+                                 "Dresses": "one-piece garments for women or girls that combine a bodice with a skirt.",
+                                 "Jumpsuit": "a one-piece garment combining top and pants, worn casually or formally depending on fabric and design.",
+                                 "Boxers": "loose-fitting innerwear or loungewear, typically worn by men.",
+                                 "Bra": "an undergarment designed to support or cover the breasts.",
+                                 "Briefs": "close-fitting underwear for men or women that provide coverage from waist to upper thighs.",
+                                 "Camisoles": "lightweight, sleeveless upper garments typically used as innerwear or summer tops.",
+                                 "Innerwear Vests": "sleeveless inner garments worn under shirts or kurtas for comfort and sweat absorption.",
+                                 "Shapewear": "form-fitting undergarments designed to smooth or contour the body’s silhouette.",
+                                 "Lounge Pants": "comfortable, loose-fitting pants designed for home or sleepwear.",
+                                 "Lounge Shorts": "short, comfortable bottoms intended for indoor use or lounging.",
+                                 "Lounge Tshirts": "casual t-shirts primarily intended for indoor or sleepwear use.",
+                                 "Night suits": "coordinated sleepwear sets, typically including a top and bottom, designed for bedtime comfort.",
+                                 "Nightdress": "a one-piece sleepwear garment for women, usually made from soft fabrics like cotton or satin.",
+                                 "Robe": "a loose-fitting outer garment, often used for lounging or after bathing.",
+                                 "Sarees": "a traditional Indian garment consisting of a long fabric draped over a blouse and petticoat.",
+                                 "Blazers": "semi-formal or formal upper-body garments with lapels, often part of suits.",
+                                 "Dupatta": "a traditional scarf or shawl worn with Indian ethnic wear, typically draped over shoulders.",
+                                 "Jackets": "outerwear designed for warmth, wind or rain protection, can be casual or formal.",
+                                 "Kurtas": "long, collarless shirts worn in South Asia, suitable for both men and women.",
+                                 "Kurtis": "shorter versions of kurtas, typically worn by women with leggings or jeans.",
+                                 "Lehenga Choli": "a traditional Indian outfit consisting of a flared skirt (lehenga) and a cropped blouse (choli), often worn with a dupatta.",
+                                 "Nehru Jackets": "hip-length tailored coats with a mandarin collar, traditionally worn over kurtas.",
+                                 "Rain Jacket": "a waterproof or water-resistant outer garment designed to keep the upper body dry during rain.",
+                                 "Rompers": "a one-piece garment combining a top and shorts, worn casually or for playwear.",
+                                 "Shirts": "a collared, button-down garment. Can be formal or casual depending on fabric and style.",
+                                 "Shrug": "a cropped cardigan-style outer layer worn over tops or dresses.",
+                                 "Suits": "a formal set of garments consisting of a jacket and trousers or skirt.",
+                                 "Sweaters": "knitted upper-body garments used for warmth.",
+                                 "Sweatshirts": "warm, thick upper garments made from fleece or cotton blends, often used for casual wear or sports.",
+                                 "Tops": "a broad term for women's upper garments not categorized as shirts or t-shirts.",
+                                 "Tunics": "long tops worn by women, typically extending below the hips.",
+                                 "Waistcoat": "a sleeveless, buttoned formal garment worn over a shirt, usually part of a suit."
+                               }
+    
+    add the appropriate category_explanation_map[articleType] from near the articleType in the line you output. Make necessary assumptions like T-shirts are Tshirts etc but dont change the word entirely (shorts are boxers, Pants are Lounge Pants and so on)
+    example : ['Unisex Shirts: a collared, button-down garment. Can be formal or casual depending on fabric and style. in Sage green and beige, Casual Summer wear during Summer. Made of Linen'], ['Men Shirts: a collared, button-down garment. Can be formal or casual depending on fabric and style. in Navy blue with a lighter blue tropical print, Resort wear during Spring/Summer. Made of Cotton poplin'], ['Men Shirts: a collared, button-down garment. Can be formal or casual depending on fabric and style. in Burgundy and teal tropical print, Casual wear during Summer. Made of Rayon']
+
+  agent: RAG_Query_Expert
+  context:
+    - Fashion_Suggestion_Task
+RAG_Query_Retrieval:
+  description: >
+    provided with a RAG friendly list of prompts, choose which is the best tool to use and provide retrieved data.
+    DO NOT TRIM DOWN OR ALTER THE PROVIDED PROMPTS. YOU SIMPLY RUN THEM ONE BY ONE.
+  expected_output : >
+    A clear JSON containing proper metadata. provide {top_k} elements per element of provided list.
+  agent: RAG_Query_Retriever
+  context:
+    - RAG_Query_Generation
+Verification_Task:
+  description: >
+    Take in Elaborated query from fashion design task, it might be list. Retain the element even if it is ok for one item in the list.
+    Filter the retrieved clothing items based on the following criteria:
+
+    MANDATORY FILTERS (Remove if mismatch):
+    1. Gender must match the target customer (e.g., Male, Female, Unisex)
+    2. clothing type (Broad match is okay, Topwear for topwear, Bottom for bottom, Inner or inner outter for outter, that sort of match is enough)
+    
+    BE LENIENT on naming differences. Use your own knowledge to block and sort out.
+    DO NOT provide query improvement suggestions.
+    DO NOT use the similarity score to judge match quality.
+
+  expected_output: >
+    A cleaned and filtered JSON of correctly matched items, based on visual and metadata verification.
+    Sort the filtered results using this priority:
+    1. Clothing Type > Color = Pattern (e.g., solid, striped, printed) < usage(Casual/Formal) match
+    2. Fabric (e.g., cotton, polyester)
+    
+    Return a list in this JSON format, sorted accordingly:
+    Be lenient have many products as possible (Choose best 5).
+    [
+      {
+        "product_id": "123",
+        "product_name": "Men's Cotton Solid T-shirt",
+        "link": "https://example.com/product/123",
+        "price": "₹499"
+      },
+      ...
+    ]
+  agent: Verifier
+  context:
+    - Fashion_Suggestion_Task
+    - RAG_Query_Retrieval
+
+
+present_results_task:
+  description: >
+    This task is the final step in the fashion product retrieval pipeline.
+    It presents the verified product results to the user in a friendly chat format.
+    The task uses the original user query, an elaborated version of it, and the verified results
+    to generate a helpful shopping assistant response.
+
+  expected_output: >
+    A JSON with a conversational message and a products field with products.
+    Pure JSON object without markdown formatting. No code blocks or special characters. Never use markdown/something else that distorts json loading anywhere in the JSON you generate!
+    A conversational message that:
+    - Begins with a short summary of the elaborated user intent,Here is the user query {text_query}, also go through elaborated query from Fashion suggestion Task and give the summary.
+    - Lists only the verified products.
+    - For each product, shows:
+        • product name
+        • product ID
+        • a clickable link using the ID (e.g., https://yourstore.com/product/id)
+    - The tone should be warm and helpful, like an e-commerce chat assistant.
+    - No suggestions for other products or improvements.
+  agent: results_presenter
+  context:
+    - Fashion_Suggestion_Task
+    - Verification_Task
+
+

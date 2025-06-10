@@ -1,0 +1,101 @@
+Overview
+Deeplearners Fashion is your one-stop destination for stylish, affordable, and high-quality clothing for every occasion—now enhanced with the power of AI. We bring you the latest trends, timeless classics, and ethnic elegance, all in one place.
+With our AI Personal Shopping Assistant, finding your perfect style is easier than ever. Simply type in or upload a photo of an outfit, and our assistant will instantly recommend similar or complementary products from our collection. You can chat with the assistant, ask questions, and get personalized suggestions based on your preferences and shopping history.
+Shopping with Deeplearners Fashion is now smarter, faster, and more fun. Let our AI assistant help you discover, choose, and even check out—all in just a few clicks.
+
+What You Can Do with Our AI Chatbot
+Shopping & Product Discovery
+- Discover similar items by uploading a photo.
+- Get outfit recommendations for weddings, parties, meetings, or casual days.
+- Check available sizes and colors for any product.
+- Find matching accessories for your outfit.
+- Get suggestions for complementary items in your cart.
+- Browse ethnic wear for all age groups.
+- Explore sustainable and eco-friendly fashion options.
+- View all brands available on the platform.
+- Get suggestions for gifts by occasion or recipient.
+- Request seasonal collections (summer, winter, festive, etc.).
+- Find products based on fabric, fit, or occasion.
+
+Order & Account Management
+- Step-by-step guidance for placing an order.
+- Assistance with checkout and payment.
+- Applying discount codes or coupons.
+- Changing or updating your shipping address.
+- Resetting your password or updating account details.
+- Viewing your order history and order status.
+- Canceling or modifying orders (if within allowed time).
+- Tracking your order after dispatch.
+
+Policies & Support
+- Detailed return and refund policy information.
+- Initiating returns or exchanges through chat.
+- Information on refund timelines and processes.
+- Clarification on non-returnable or no-refund items.
+- Shipping options, delivery times, and charges.
+- International shipping availability and rates.
+- Accepted payment methods and payment safety.
+- Contacting customer support via chat, email, or phone.
+- Requesting escalation to a supervisor or manager.
+- Guidance for resolving technical issues.
+- Reporting damaged or incorrect items.
+
+Company & Brand Info
+- Company location and service areas.
+- CEO: Badri Narayanan.
+- What makes Deeplearners Fashion unique.
+- Information about physical stores (currently online-only).
+- Product sourcing and ethical practices.
+- Sustainability initiatives and eco-friendly options.
+- Partnership and collaboration opportunities.
+- Vendor and supplier registration process.
+- Brand story and mission statement.
+
+Technical & Security
+- Data privacy and security practices.
+- Payment protection and secure checkout.
+- Account deletion process.
+- Troubleshooting technical issues with the website or app.
+
+Additional Services & Features
+- Newsletter subscription management.
+- Gift card availability and purchase.
+- Information on student, first-time, or festival discounts.
+- Feedback submission and review process.
+- Size guide and fitting assistance.
+- Style guides, lookbooks, and fashion tips.
+- Notifications about upcoming sales and promotions.
+- Loyalty points or rewards program details.
+- Availability of digital receipts and invoices.
+- Information about product care and washing instructions.
+- Accessibility features for differently-abled users.
+
+Company Information
+- CEO: Badri Narayanan
+- Location: Chennai, India
+- Platform: Online-only, serving customers across India.
+- Mission: To make fashion discovery effortless, enjoyable, and accessible for everyone, powered by innovative AI technology.
+- Unique Value: Personalized AI-powered shopping, curated collections, and a customer-first approach.
+
+Refund & Return Policy
+- Standard Products: Returns and exchanges accepted within 7 days of delivery, if items are unworn, unwashed, and in original packaging.
+- No Refund Items: Digital downloads, personalized, or clearance items are non-refundable and non-returnable.
+- Refund Process: Approved refunds are processed to the original payment method within 5-7 business days after inspection.
+- Exchanges: Available for size or color changes within the return window.
+- Initiation: Contact support or use the chatbot to start a return or exchange.
+- Exceptions: For defective or incorrect items, contact support immediately for resolution.
+
+Shipping & Delivery
+- Shipping Options: Standard, express, and next-day delivery.
+- Order Tracking: Tracking link provided via email and in your account dashboard.
+- International Shipping: Available; rates calculated at checkout.
+- Delivery Time: Varies by location and shipping option.
+
+Payment & Security
+- Payment Methods: Credit/debit cards, UPI, net banking, PayPal, and select wallets.
+- Security: Secure payment gateways and encrypted data for safe transactions.
+
+Customer Support
+- Contact Methods: 24/7 AI chat assistant, email (support@deeplearnersfashion.com), and phone helpline.
+- Feedback: Submit via chatbot or feedback form on the website.
+- Account Help: Assistance with password reset, account updates, and deletion.
