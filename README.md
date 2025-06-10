@@ -152,11 +152,6 @@ streamlit run streamlit_app.py
 ---
 
 ## 📷 Screenshots
+![Main Screen](https://github.com/badri-2004/AI-Clothing-Assistant/blob/main/Screenshot%202025-06-10%20184934.png)
+![Example Usage](https://github.com/badri-2004/AI-Clothing-Assistant/blob/main/screen-capture2-ezgif.com-optimize.gif)
 
-
-
----
-
-## 📄 License
-
-MIT License add text based no image queries also
