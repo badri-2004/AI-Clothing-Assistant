@@ -2,9 +2,15 @@ import streamlit as st
 import os
 import warnings
 import torch
-__import__('pysqlite3')
+import pysqlite3  # Ensures it's in sys.modules
 import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+# Only remap if pysqlite3 was successfully imported
+if 'pysqlite3' in sys.modules:
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+else:
+    raise ImportError("pysqlite3 module not loaded — ensure it is installed.")
+
 
 warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 # MUST be the first Streamlit call
